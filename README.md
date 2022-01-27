@@ -1,4 +1,4 @@
-#Trusur WhatsApp Bot [NodeJS]
+# Trusur WhatsApp Bot [NodeJS]
 ```bash
 git clone https://github.com/trusursidik12/wa_notification.git
 ```
