@@ -42,7 +42,7 @@ const sendNotif = (data, callback)=>{
 
 const updateStatus = async (id)=> {
     try{
-        let {data} = await axios.post(`${baseUrl}/api/notification/${id}`,null,{
+        let {data} = await axios.post(`${baseUrl}/api/notification/update/${id}`,null,{
             headers : {
                 'APIKey' : `${apiKey}#`
             },
