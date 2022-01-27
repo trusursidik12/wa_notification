@@ -1,7 +1,7 @@
 const axios = require('axios').default;
 const apiKey = `TrusurR2h2s12123x!@`;
-const baseUrl = `http://localhost:8080`;
-// const baseUrl = `https://trusur-dashboards.ispumaps.id`;
+// const baseUrl = `http://localhost:8080`;
+const baseUrl = `https://trusur-dashboards.ispumaps.id`;
 
 const sleep = (ms)=>{
     return new Promise((resolve) => {
