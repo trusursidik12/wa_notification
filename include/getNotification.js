@@ -32,7 +32,6 @@ const sendNotif = (data, callback)=>{
     try{
         const receiver = (data.is_group == "1" ? `${data.receiver}@g.us` : `${data.receiver}@c.us`);
         console.log(`Notif Sent to ${receiver}`);
-        // Sent Message
         return true;
     }catch(err){
         console.log(`Error sending notification : ${err}`);
@@ -42,16 +41,17 @@ const sendNotif = (data, callback)=>{
 
 const updateStatus = async (id)=> {
     try{
-        let {data} = await axios.post(`${baseUrl}/api/notification/update/${id}`,null,{
+        let {data} = await axios.get(`${baseUrl}/api/notification/update/${id}`,{
             headers : {
                 'APIKey' : `${apiKey}#`
             },
         })
         if(data.success){
-            console.log(`Notification was updated to sent!`);
+            console.log(`Notification was updated to sent! ID:${id}`);
             return true;
         }
-        console.log(data.messages);
+        console.log(`Notification update failed! ${data.messages}`);
+        throw 'exit';
         return false;
     }catch(err){
         console.log(`Error Update Status Notification: ${err}`);

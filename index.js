@@ -2,11 +2,11 @@ const fs = require('fs');
 const { Client } = require('whatsapp-web.js');
 const SESSION_FILE_PATH = './session.json';
 const getNotif = require('./include/getNotification')
-const intervalCheck = 50000; // ms
-const delaySending = 10000; // ms
+const intervalCheck = 300000; // ms | 5 mins
+const delaySending = 60000; // ms | 1 mins
 
 let sessionData;
-if(fs.existsSync(SESSION_FILE_PATH)) {
+if(fs.existsSync(SESSION_FILE_PATH)) { // Restore session
     sessionData = require(SESSION_FILE_PATH);
 }
 const client = new Client({
@@ -35,11 +35,14 @@ client.on('ready', async () => {
     console.log('Bot WhatsApp berhasil dijalankan!');
     try{
         setInterval(async () => {
+            console.log('Trying to get notifications...');
             const notifications = await getNotif.getNotif();
             notifications.forEach(async (value)=>{
                 const chatId = getNotif.getChatId(value);
-                console.log(`Sending to ${chatId}`);
                 setTimeout(async() => {
+                    /**
+                     * sendMessage(chatId[string], content[string|image|etc])
+                     */
                     client.sendMessage(chatId, value.content);
                     await getNotif.updateStatus(value.id);
                 }, delaySending);
