@@ -34,18 +34,20 @@ client.on('qr', (qr) => {
 client.on('ready', async () => {
     console.log('Bot WhatsApp berhasil dijalankan!');
     try{
+        let today = new Date();
         setInterval(async () => {
             console.log('Trying to get notifications...');
             const notifications = await getNotif.getNotif();
-            notifications.forEach(async (value)=>{
+            notifications.forEach(async (value,index)=>{
                 const chatId = getNotif.getChatId(value);
                 setTimeout(async() => {
+                    let time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
                     /**
                      * sendMessage(chatId[string], content[string|image|etc])
                      */
-                    client.sendMessage(chatId, value.content);
+                    await client.sendMessage(chatId, value.content);
                     await getNotif.updateStatus(value.id);
-                }, delaySending);
+                }, ((index+1) * delaySending));
             })
          }, intervalCheck);
     }catch(err){

@@ -6,5 +6,5 @@ git clone https://github.com/trusursidik12/wa_notification.git
 npm install
 ```
 ```bash
-npm start
+npm start   
 ```
