@@ -1,7 +1,7 @@
 const axios = require('axios').default;
 const apiKey = `TrusurR2h2s12123x!@`;
 // const baseUrl = `http://localhost:8080`;
-const baseUrl = `https://trusur-dashboards.ispumaps.id`;
+const baseUrl = `https://dashboards.trusur.tech`;
 
 const sleep = (ms)=>{
     return new Promise((resolve) => {
@@ -10,13 +10,13 @@ const sleep = (ms)=>{
 }
 const getNotif = async ()=>{
     try{
-        let {data} = await axios.get(`${baseUrl}/api/notifications`,{
+        // let {data} = await axios.get(`${baseUrl}/api/notifications`,{
+        let {data} = await axios.get(`http://localhost/xyz/test.php`,{
             params : {
                 'APIKey' : apiKey
             },
         });
         if(data.success){
-            console.log(`Total Notifications: ${data.total}`);
             return data.data;
         }
         return null;
@@ -47,14 +47,11 @@ const updateStatus = async (id)=> {
             },
         })
         if(data.success){
-            console.log(`Notification was updated to sent! ID:${id}`);
             return true;
         }
-        console.log(`Notification update failed! ${data.messages}`);
         throw 'exit';
         return false;
     }catch(err){
-        console.log(`Error Update Status Notification: ${err}`);
         return false;
     }
 }

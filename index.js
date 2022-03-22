@@ -1,16 +1,20 @@
+const { countReset, count } = require('console');
 const fs = require('fs');
-const { Client } = require('whatsapp-web.js');
+const moment = require('moment');
+const { Client , LegacySessionAuth} = require('whatsapp-web.js');
 const SESSION_FILE_PATH = './session.json';
 const getNotif = require('./include/getNotification')
-const intervalCheck = 300000; // ms | 5 mins
-const delaySending = 60000; // ms | 1 mins
+const intervalCheck = 60000; // ms | 1 mins
+const delaySending = 5000; // ms | 10 sec
 
 let sessionData;
 if(fs.existsSync(SESSION_FILE_PATH)) { // Restore session
     sessionData = require(SESSION_FILE_PATH);
 }
 const client = new Client({
-    session: sessionData
+    authStrategy: new LegacySessionAuth({
+        session: sessionData
+    })
 });
 
 client.on('authenticated', (session) => {
@@ -30,25 +34,43 @@ client.on('qr', (qr) => {
         console.log(`QR Code telah update! Harap Scan QR Code terbaru! \nqr.png`);
     })
 });
-
+let getNow = ()=>{
+    return moment().format('d MMMM YYYY h:mm:ss a')
+}
 client.on('ready', async () => {
-    console.log('Bot WhatsApp berhasil dijalankan!');
+    console.log(`[${getNow()}] - Bot WhatsApp already running!`);
     try{
-        let today = new Date();
+        let countNotification = 0;
         setInterval(async () => {
-            console.log('Trying to get notifications...');
-            const notifications = await getNotif.getNotif();
-            notifications.forEach(async (value,index)=>{
-                const chatId = getNotif.getChatId(value);
-                setTimeout(async() => {
-                    let time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-                    /**
-                     * sendMessage(chatId[string], content[string|image|etc])
-                     */
-                    await client.sendMessage(chatId, value.content);
-                    await getNotif.updateStatus(value.id);
-                }, ((index+1) * delaySending));
-            })
+            if(countNotification < 1){
+                console.log(`[${getNow()}] - Get new notifications...`);
+                const notifications = await getNotif.getNotif();
+                countNotification = notifications.length;
+                console.log(`[${getNow()}] - Waiting list : ${countNotification} notifications`);
+                await notifications.forEach(async (value,index)=>{
+                    const chatId = getNotif.getChatId(value);
+                    setTimeout(async() => {
+                        console.log(`[${getNow()}] - Remain : ${countNotification} notifications`)
+                        /**
+                         * sendMessage(chatId[string], content[string|image|etc])
+                         */
+                        client.sendMessage(chatId, value.content)
+                        .then(()=>{
+                            countNotification--;
+                            getNotif.updateStatus(value.id)
+                            .then(()=>{
+                                console.log(`[${getNow()}] - Message sent to ${value.receiver}`);
+                            }).catch((e) => {
+                                console.log(`[${getNow()}] - [Error] : Cant update status was sent ID:${value.id}`)
+                            });
+                        }).catch((e)=>{
+                            console.log(`[${getNow()}] - [Error] : Cant sent to :${value.receiver}`)
+                        })
+                    }, ((index+1) * delaySending));
+                })
+            }else{
+                console.log(`[${getNow()}] - Waiting ${countNotification} sent successfully`);
+            }
          }, intervalCheck);
     }catch(err){
         console.log(`Apps was forced to close. Because : ${err}`);
