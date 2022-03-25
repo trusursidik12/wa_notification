@@ -10,8 +10,8 @@ const sleep = (ms)=>{
 }
 const getNotif = async ()=>{
     try{
-        // let {data} = await axios.get(`${baseUrl}/api/notifications`,{
-        let {data} = await axios.get(`http://localhost/xyz/test.php`,{
+        let {data} = await axios.get(`${baseUrl}/api/notifications`,{
+        // let {data} = await axios.get(`http://localhost/xyz/test.php`,{
             params : {
                 'APIKey' : apiKey
             },
