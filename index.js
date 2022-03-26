@@ -36,7 +36,7 @@ client.on('qr', (qr) => {
 });
 let getNow = ()=>{
 
-    return moment().locale('id').zone('+07:00').format('d MMMM YYYY h:mm:ss a')
+    return moment().locale('id').zone('+07:00').format('dddd MMMM YYYY h:mm:ss a')
 }
 client.on('ready', async () => {
     console.log(`[${getNow()}] - Bot WhatsApp already running!`);
