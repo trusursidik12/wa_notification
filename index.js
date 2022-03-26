@@ -35,7 +35,8 @@ client.on('qr', (qr) => {
     })
 });
 let getNow = ()=>{
-    return moment().format('d MMMM YYYY h:mm:ss a')
+
+    return moment().locale('id').zone('+07:00').format('d MMMM YYYY h:mm:ss a')
 }
 client.on('ready', async () => {
     console.log(`[${getNow()}] - Bot WhatsApp already running!`);
@@ -74,6 +75,15 @@ client.on('ready', async () => {
          }, intervalCheck);
     }catch(err){
         console.log(`Apps was forced to close. Because : ${err}`);
+    }
+});
+client.on('message',msg =>{
+    const request = msg.body.toLocaleLowerCase() ;
+    if (request == '!ping') {
+        msg.reply(`pong`);
+    }
+    if (request == '!test' || request == 'test') {
+        msg.reply(`Bot is running!`);
     }
 });
 client.on('disconnected', () => {
