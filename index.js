@@ -43,7 +43,7 @@ client.on('ready', async () => {
     try{
         let countNotification = 0;
         setInterval(async () => {
-            if(countNotification < 1){
+            if(countNotification <= 1){
                 console.log(`[${getNow()}] - Get new notifications...`);
                 const notifications = await getNotif.getNotif();
                 countNotification = notifications.length;
