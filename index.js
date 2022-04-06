@@ -38,10 +38,11 @@ let getNow = ()=>{
 
     return moment().locale('id').utcOffset(7).format('dddd, D MMMM YYYY H:mm:ss')
 }
+let countNotification = 0;
 client.on('ready', async () => {
     console.log(`[${getNow()}] - Bot WhatsApp already running!`);
     try{
-        let countNotification = 0;
+        countNotification = 0;
         setInterval(async () => {
             if(countNotification <= 1){
                 console.log(`[${getNow()}] - Get new notifications...`);
@@ -89,6 +90,7 @@ client.on('message',msg =>{
 client.on('disconnected', () => {
     console.log('Bot WhatsApp berhenti berjalan!');
     console.log('Disconnected from Device! Please Reconnect!');
+    countNotification = 0;
 });
 
 
