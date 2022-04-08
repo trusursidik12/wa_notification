@@ -67,6 +67,7 @@ client.on('ready', async () => {
                             });
                         }).catch((e)=>{
                             console.log(`[${getNow()}] - [Error] : Cant sent to :${value.receiver}`)
+                            countNotification=0;
                         })
                     }, ((index+1) * delaySending));
                 })
