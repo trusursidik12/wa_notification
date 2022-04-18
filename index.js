@@ -1,7 +1,7 @@
 const { countReset, count } = require('console');
 const fs = require('fs');
 const moment = require('moment');
-const { Client , LegacySessionAuth} = require('whatsapp-web.js');
+const { Client , LegacySessionAuth, LocalAuth} = require('whatsapp-web.js');
 const SESSION_FILE_PATH = './session.json';
 const getNotif = require('./include/getNotification')
 const intervalCheck = 60000; // ms | 1 mins
@@ -12,9 +12,10 @@ if(fs.existsSync(SESSION_FILE_PATH)) { // Restore session
     sessionData = require(SESSION_FILE_PATH);
 }
 const client = new Client({
-    authStrategy: new LegacySessionAuth({
-        session: sessionData
-    })
+    // authStrategy: new LegacySessionAuth({
+    //     session: sessionData
+    // })
+    authStrategy: new LocalAuth({clientId : 'dashboards'})
 });
 
 client.on('authenticated', (session) => {
