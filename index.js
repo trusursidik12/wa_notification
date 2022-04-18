@@ -19,12 +19,7 @@ const client = new Client({
 });
 
 client.on('authenticated', (session) => {
-    sessionData = session;
-    fs.writeFile(SESSION_FILE_PATH, JSON.stringify(session), (err) => {
-        if (err) {
-            console.error(err);
-        }
-    });
+   console.log(`Linked Account Success!`)
 });
 
 client.on('qr', (qr) => {
