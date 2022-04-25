@@ -1,2 +1,3 @@
-2022/04/18-15:00:16.788 137ee Creating DB /data/home/ir001/www/trusur-wa-bot/.wwebjs_auth/session-dashboards/Default/Session Storage since it was missing.
-2022/04/18-15:00:16.799 137ee Reusing MANIFEST /data/home/ir001/www/trusur-wa-bot/.wwebjs_auth/session-dashboards/Default/Session Storage/MANIFEST-000001
+2022/04/25-12:46:42.203 cd2c Reusing MANIFEST /home/ir001/www/trusur-wa-bot/.wwebjs_auth/session-dashboards/Default/Session Storage/MANIFEST-000001
+2022/04/25-12:46:42.204 cd2c Recovering log #3
+2022/04/25-12:46:42.204 cd2c Reusing old log /home/ir001/www/trusur-wa-bot/.wwebjs_auth/session-dashboards/Default/Session Storage/000003.log 

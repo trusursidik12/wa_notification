@@ -43,30 +43,33 @@ client.on('ready', async () => {
             if(countNotification <= 1){
                 console.log(`[${getNow()}] - Get new notifications...`);
                 const notifications = await getNotif.getNotif();
-                countNotification = notifications.length;
-                console.log(`[${getNow()}] - Waiting list : ${countNotification} notifications`);
-                await notifications.forEach(async (value,index)=>{
-                    const chatId = getNotif.getChatId(value);
-                    setTimeout(async() => {
-                        console.log(`[${getNow()}] - Remain : ${countNotification} notifications`)
-                        /**
-                         * sendMessage(chatId[string], content[string|image|etc])
-                         */
-                        client.sendMessage(chatId, value.content)
-                        .then(()=>{
-                            countNotification--;
-                            getNotif.updateStatus(value.id)
+                countNotification = notifications?.length;                
+                if(countNotification != undefined){
+                    console.log(`[${getNow()}] - Waiting list : ${countNotification} notifications`);
+                    await notifications.forEach(async (value,index)=>{
+                        const chatId = getNotif.getChatId(value);
+                        setTimeout(async() => {
+                            console.log(`[${getNow()}] - Remain : ${countNotification} notifications`)
+                            /**
+                             * sendMessage(chatId[string], content[string|image|etc])
+                             */
+                            client.sendMessage(chatId, value.content)
                             .then(()=>{
-                                console.log(`[${getNow()}] - Message sent to ${value.receiver}`);
-                            }).catch((e) => {
-                                console.log(`[${getNow()}] - [Error] : Cant update status was sent ID:${value.id}`)
-                            });
-                        }).catch((e)=>{
-                            console.log(`[${getNow()}] - [Error] : Cant sent to :${value.receiver}`)
-                            countNotification=0;
-                        })
-                    }, ((index+1) * delaySending));
-                })
+                                countNotification--;
+                                getNotif.updateStatus(value.id)
+                                .then(()=>{
+                                    console.log(`[${getNow()}] - Message sent to ${value.receiver}`);
+                                }).catch((e) => {
+                                    console.log(`[${getNow()}] - [Error] : Cant update status was sent ID:${value.id}`)
+                                });
+                            }).catch((e)=>{
+                                console.log(`[${getNow()}] - [Error] : Cant sent to :${value.receiver}`)
+                                console.log(e)
+                                countNotification=0;
+                            })
+                        }, ((index+1) * delaySending));
+                    })
+                }
             }else{
                 console.log(`[${getNow()}] - Waiting ${countNotification} sent successfully`);
             }
