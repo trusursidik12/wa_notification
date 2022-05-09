@@ -69,6 +69,8 @@ client.on('ready', async () => {
                             })
                         }, ((index+1) * delaySending));
                     })
+                }else{
+                    countNotification = 0;
                 }
             }else{
                 console.log(`[${getNow()}] - Waiting ${countNotification} sent successfully`);

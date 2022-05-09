@@ -19,11 +19,10 @@ const getNotif = async ()=>{
         if(data.success){
             return data.data;
         }
-        return null;
-
     }catch(err){
         console.log(err.toString());
     }
+    return null;
 }
 const getChatId = (data) =>{
     return (data.is_group == "1" ? `${data.receiver}@g.us` : `${data.receiver}@c.us`);
